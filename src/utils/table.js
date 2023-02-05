@@ -37,6 +37,17 @@ function createJourney(
   };
 }
 
+// create station data record
+function createStation(no, id, name, address, capacity) {
+  return {
+      no,
+    id,
+    name,
+    address,
+    capacity,
+  };
+}
+
 // compare row data for shorting
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -66,43 +77,72 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-// Title of journey list
+// Title of list
 const headCells = [
-  {
-    id: "id",
-    disablePadding: true,
-    label: "Id",
-  },
-  {
-    id: "departure",
-    disablePadding: false,
-    label: "Departure time",
-  },
-  {
-    id: "returnTime",
-    disablePadding: false,
-    label: "Return time",
-  },
-  {
-    id: "departureStation",
-    disablePadding: false,
-    label: "Departure station",
-  },
-  {
-    id: "returnStation",
-    disablePadding: false,
-    label: "Return station",
-  },
-  {
-    id: "distance",
-    disablePadding: false,
-    label: "Distance",
-  },
-  {
-    id: "duration",
-    disablePadding: false,
-    label: "Duration",
-  },
+  [
+    {
+      id: "id",
+      disablePadding: true,
+      label: "Id",
+    },
+    {
+      id: "departure",
+      disablePadding: false,
+      label: "Departure time",
+    },
+    {
+      id: "returnTime",
+      disablePadding: false,
+      label: "Return time",
+    },
+    {
+      id: "departureStation",
+      disablePadding: false,
+      label: "Departure station",
+    },
+    {
+      id: "returnStation",
+      disablePadding: false,
+      label: "Return station",
+    },
+    {
+      id: "distance",
+      disablePadding: false,
+      label: "Distance",
+    },
+    {
+      id: "duration",
+      disablePadding: false,
+      label: "Duration",
+    },
+  ],
+  [
+    {
+      id: "no",
+      disablePadding: true,
+      label: "No",
+    },
+    {
+      id: "id",
+      disablePadding: true,
+      label: "Id",
+    },
+    {
+      id: "name",
+      disablePadding: false,
+      label: "Name",
+    },
+    {
+      id: "Address",
+      disablePadding: false,
+      label: "Adress",
+    },
+    {
+      id: "capacity",
+      disablePadding: false,
+      label: "Capacity",
+    },
+  ],
 ];
 
 // table display
@@ -114,6 +154,7 @@ function EnhancedTableHead(props) {
     numSelected,
     rowCount,
     onRequestSort,
+    isJourney,
   } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -133,27 +174,53 @@ function EnhancedTableHead(props) {
             }}
           />
         </TableCell>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={"center"}
-            padding={headCell.disablePadding ? "none" : "normal"}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : "asc"}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
+        {isJourney
+          ? headCells[0].map((headCell) => (
+              <TableCell
+                key={headCell.id}
+                align={"center"}
+                padding={headCell.disablePadding ? "none" : "normal"}
+                sortDirection={orderBy === headCell.id ? order : false}
+              >
+                <TableSortLabel
+                  active={orderBy === headCell.id}
+                  direction={orderBy === headCell.id ? order : "asc"}
+                  onClick={createSortHandler(headCell.id)}
+                >
+                  {headCell.label}
+                  {orderBy === headCell.id ? (
+                    <Box component="span" sx={visuallyHidden}>
+                      {order === "desc"
+                        ? "sorted descending"
+                        : "sorted ascending"}
+                    </Box>
+                  ) : null}
+                </TableSortLabel>
+              </TableCell>
+            ))
+          : headCells[1].map((headCell) => (
+              <TableCell
+                key={headCell.id}
+                align={"center"}
+                padding={headCell.disablePadding ? "none" : "normal"}
+                sortDirection={orderBy === headCell.id ? order : false}
+              >
+                <TableSortLabel
+                  active={orderBy === headCell.id}
+                  direction={orderBy === headCell.id ? order : "asc"}
+                  onClick={createSortHandler(headCell.id)}
+                >
+                  {headCell.label}
+                  {orderBy === headCell.id ? (
+                    <Box component="span" sx={visuallyHidden}>
+                      {order === "desc"
+                        ? "sorted descending"
+                        : "sorted ascending"}
+                    </Box>
+                  ) : null}
+                </TableSortLabel>
+              </TableCell>
+            ))}
       </TableRow>
     </TableHead>
   );
@@ -166,12 +233,12 @@ EnhancedTableHead.propTypes = {
   order: PropTypes.oneOf(["asc", "desc"]).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
+  isJourney: PropTypes.bool.isRequired,
 };
 
 // tool bar for table display
 function EnhancedTableToolbar(props) {
-  const { numSelected } = props;
-
+  const { numSelected, isJourney } = props;
 
   return (
     <Toolbar
@@ -196,7 +263,7 @@ function EnhancedTableToolbar(props) {
         >
           {numSelected} selected
         </Typography>
-      ) : (
+      ) : isJourney ? (
         <Typography
           sx={{ flex: "1 1 100%" }}
           variant="h6"
@@ -205,11 +272,20 @@ function EnhancedTableToolbar(props) {
         >
           List of Journey
         </Typography>
+      ) : (
+        <Typography
+          sx={{ flex: "1 1 100%" }}
+          variant="h6"
+          id="tableTitle"
+          component="div"
+        >
+          List of Station
+        </Typography>
       )}
 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
-          <IconButton >
+          <IconButton>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -227,10 +303,12 @@ function EnhancedTableToolbar(props) {
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
   selected: PropTypes.array,
+  isJourney: PropTypes.bool.isRequired,
 };
 
 export {
   createJourney,
+  createStation,
   EnhancedTableHead,
   EnhancedTableToolbar,
   stableSort,

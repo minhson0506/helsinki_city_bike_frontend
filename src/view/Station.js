@@ -1,4 +1,23 @@
-import {useStation} from "../hooks/Apihooks";
+import React, { useEffect, useState } from "react";
+import { useStation } from "../hooks/Apihooks";
+import {
+  createStation,
+  EnhancedTableHead,
+  EnhancedTableToolbar,
+  getComparator,
+  stableSort,
+} from "../utils/table";
+import Box from "@mui/material/Box";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
 
 const Station = () => {
   const { getAllStations } = useStation();
@@ -13,25 +32,19 @@ const Station = () => {
         let data = [];
         response.forEach(async (element) => {
           data.push(
-            createJourney(
+            createStation(
+              element.Fid,
               element.Id,
-              element.Departure.split("T")[0] +
-                " " +
-                element.Departure.split("T")[1].substr(0, 8),
-              element.Return_.split("T")[0] +
-                " " +
-                element.Departure.split("T")[1].substr(0, 8),
-              element.Departure_station_name,
-              element.Return_station_name,
-              element.Distance,
-              element.Duration
+              element.Name,
+              element.Address,
+              element.Lapasiteet
             )
           );
         });
         setRows(data);
       }
     } catch (error) {
-      console.log("error when get all journeys", error);
+      console.log("error when get all station", error);
     }
   };
 
@@ -40,7 +53,7 @@ const Station = () => {
   });
 
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("id");
+  const [orderBy, setOrderBy] = React.useState("no");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
@@ -55,7 +68,7 @@ const Station = () => {
   // function for all click
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.id);
+      const newSelected = rows.map((n) => n.no);
       setSelected(newSelected);
       return;
     }
@@ -63,12 +76,12 @@ const Station = () => {
   };
 
   // function for delecting a row
-  const handleClick = (event, id) => {
-    const selectedIndex = selected.indexOf(id);
+  const handleClick = (event, no) => {
+    const selectedIndex = selected.indexOf(no);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
+      newSelected = newSelected.concat(selected, no);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -98,7 +111,7 @@ const Station = () => {
     setDense(event.target.checked);
   };
 
-  const isSelected = (id) => selected.indexOf(id) !== -1;
+  const isSelected = (no) => selected.indexOf(no) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -109,7 +122,11 @@ const Station = () => {
       {rows !== undefined ? (
         <Box sx={{ width: "100%" }}>
           <Paper sx={{ width: "100%", mb: 2 }}>
-            <EnhancedTableToolbar numSelected={selected.length} selected={selected}/>
+            <EnhancedTableToolbar
+              numSelected={selected.length}
+              selected={selected}
+              isJourney={false}
+            />
             <TableContainer>
               <Table
                 sx={{ minWidth: 750 }}
@@ -123,21 +140,22 @@ const Station = () => {
                   onSelectAllClick={handleSelectAllClick}
                   onRequestSort={handleRequestSort}
                   rowCount={rows.length}
+                  isJourney={false}
                 />
                 <TableBody>
                   {stableSort(rows, getComparator(order, orderBy))
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => {
-                      const isItemSelected = isSelected(row.id);
+                      const isItemSelected = isSelected(row.no);
                       const labelId = `enhanced-table-checkbox-${index}`;
                       return (
                         <TableRow
                           hover
-                          onClick={(event) => handleClick(event, row.id)}
+                          onClick={(event) => handleClick(event, row.no)}
                           role="checkbox"
                           aria-checked={isItemSelected}
                           tabIndex={-1}
-                          key={row.id}
+                          key={row.no}
                           selected={isItemSelected}
                         >
                           <TableCell padding="checkbox">
@@ -156,18 +174,12 @@ const Station = () => {
                             padding="none"
                             align="center"
                           >
-                            {row.id}
+                            {row.no}
                           </TableCell>
-                          <TableCell align="center">{row.departure}</TableCell>
-                          <TableCell align="center">{row.returnTime}</TableCell>
-                          <TableCell align="center">
-                            {row.departureStation}
-                          </TableCell>
-                          <TableCell align="center">
-                            {row.returnStation}
-                          </TableCell>
-                          <TableCell align="center">{row.distance}</TableCell>
-                          <TableCell align="center">{row.duration}</TableCell>
+                          <TableCell align="center">{row.id}</TableCell>
+                          <TableCell align="center">{row.name}</TableCell>
+                          <TableCell align="center">{row.address}</TableCell>
+                          <TableCell align="center">{row.capacity}</TableCell>
                         </TableRow>
                       );
                     })}
@@ -203,7 +215,6 @@ const Station = () => {
       )}
     </>
   );
-  };
-  
-  export { Station };
-  
+};
+
+export { Station };

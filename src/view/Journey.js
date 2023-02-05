@@ -129,7 +129,11 @@ const Journey = () => {
       {rows !== undefined ? (
         <Box sx={{ width: "100%" }}>
           <Paper sx={{ width: "100%", mb: 2 }}>
-            <EnhancedTableToolbar numSelected={selected.length} selected={selected}/>
+            <EnhancedTableToolbar
+              numSelected={selected.length}
+              selected={selected}
+              isJourney={true}
+            />
             <TableContainer>
               <Table
                 sx={{ minWidth: 750 }}
@@ -143,6 +147,7 @@ const Journey = () => {
                   onSelectAllClick={handleSelectAllClick}
                   onRequestSort={handleRequestSort}
                   rowCount={rows.length}
+                  isJourney={true}
                 />
                 <TableBody>
                   {stableSort(rows, getComparator(order, orderBy))
