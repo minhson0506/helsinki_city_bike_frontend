@@ -1,70 +1,57 @@
-# Getting Started with Create React App
+# Helsinki City Bike App 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Helsinki City Bike App was created to help organize journey and station in Helsinki area.
 
-## Available Scripts
+## App features
 
-In the project directory, you can run:
+<ul>
+  <li> Display a table of Journey taken (with pagination, ordering per column feature)
+  <li> Display a table of Station (with pagination, ordering per column feature)
+  <li> Display information of each Station and show location in the map
+  <li> Upload database in UI
+</ul>
+  
+## A sneak peek of Helsinki City App!!
 
-### `npm start`
+<p align="center">
+  <img width="1924" alt="Screenshot 2023-02-05 at 20 45 04" src="https://user-images.githubusercontent.com/73076333/216838701-73b0c906-0383-439f-9426-8243a63a97e5.png">
+<img width="1928" alt="Screenshot 2023-02-05 at 20 43 35" src="https://user-images.githubusercontent.com/73076333/216838707-d50a410a-1b70-4a32-a143-979563b981e9.png">
+<img width="1214" alt="Screenshot 2023-02-05 at 20 45 12" src="https://user-images.githubusercontent.com/73076333/216838716-7064d36b-a7a7-40ec-b504-ce9db8d1a394.png">
+<img src="https://user-images.githubusercontent.com/73076333/216838782-c07bb3f2-3d07-4f9f-8ca7-89c37b6b0007.png" width="1214"> 
+  <img src="https://user-images.githubusercontent.com/73076333/216838788-94bac500-7fd4-432f-95a3-b797496e3258.png" width="1214"> 
+</p> 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Stack
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+#Backend: NodeJs, MySql
 
-### `npm test`
+#Frontend: React JS
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Installation
 
-### `npm run build`
+1. Clone Helsinki Bike App to local:
+```
+$ git clone git@github.com:minhson0506/helsinki_city_bike.git
+```
+2. Open project in Visual Studio
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+4. Create database in local:
+<li>	Connect to your database server as a root user on command line: mysql -u root -p / mysql -u root -p / mysql (command depends on you operating system/version installed) or using the MariaDB Client application (Windows) and create a database and a user with privileges on it:
+<li>	CREATE DATABASE bikedb;
+<li>	CREATE USER 'dbuser;
+<li>	GRANT USAGE ON *.* TO 'dbuser';
+<li>	GRANT ALL ON bikedb.* TO 'dbuser';
+<li>	FLUSH PRIVILEGES;
+exit
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+5. Import the tables and insert the data: mysql -u dbuser -p bikedb < db-starter.sql or copy-paste the contents of the script with command-line client (file is locate in backend folder)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+5. Build and run project.
+```
+$ cd helsinki_city_bike_backend && npm start
 
-### `npm run eject`
+$ cd helsinki_city_bike_frontkend && npm start
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
