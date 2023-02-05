@@ -59,7 +59,9 @@ function createStationDetail(
   start,
   end,
   distanceStart,
-  distanceEnd
+  distanceEnd,
+  x,
+  y
 ) {
   return {
     name,
@@ -68,6 +70,8 @@ function createStationDetail(
     end,
     distanceStart,
     distanceEnd,
+    x,
+    y,
   };
 }
 
