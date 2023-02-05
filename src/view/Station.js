@@ -18,11 +18,15 @@ import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { MainContext } from "../contexts/MainContext";
 
 const Station = () => {
   const { getAllStations } = useStation();
 
+
   const [rows, setRows] = useState();
+  const { setNavigator, setId, loading, setLoading } = React.useContext(MainContext);
 
   // get data of station
   const getJourneys = async () => {
@@ -50,7 +54,7 @@ const Station = () => {
 
   useEffect(() => {
     getJourneys();
-  });
+  }, []);
 
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("no");
@@ -151,7 +155,6 @@ const Station = () => {
                       return (
                         <TableRow
                           hover
-                          onClick={(event) => handleClick(event, row.no)}
                           role="checkbox"
                           aria-checked={isItemSelected}
                           tabIndex={-1}
@@ -165,6 +168,7 @@ const Station = () => {
                               inputProps={{
                                 "aria-labelledby": labelId,
                               }}
+                              onClick={(event) => handleClick(event, row.no)}
                             />
                           </TableCell>
                           <TableCell
@@ -180,6 +184,15 @@ const Station = () => {
                           <TableCell align="center">{row.name}</TableCell>
                           <TableCell align="center">{row.address}</TableCell>
                           <TableCell align="center">{row.capacity}</TableCell>
+                          <TableCell align="center">
+                            <ArrowForwardIosIcon
+                              onClick={() => {
+                                setLoading(!loading)
+                                setId(row.id)
+                                setNavigator(true);
+                              }}
+                            ></ArrowForwardIosIcon>
+                          </TableCell>
                         </TableRow>
                       );
                     })}

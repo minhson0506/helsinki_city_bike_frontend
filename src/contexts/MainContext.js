@@ -4,13 +4,19 @@ import PropTypes from 'prop-types';
 const MainContext = React.createContext({});
 
 const MainProvider = (props) => {
-  const [loading, setLoding] = useState(false);
+  const [navigator, setNavigator] = useState(false);
+  const [id, setId] = useState("")
+  const [loading, setLoading] = useState(false)
 
   return (
     <MainContext.Provider
       value={{
-        loading, 
-        setLoding
+        navigator, 
+        setNavigator,
+        id,
+        setId,
+        loading,
+        setLoading
       }}
     >
       {props.children}

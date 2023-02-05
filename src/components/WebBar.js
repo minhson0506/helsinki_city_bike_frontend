@@ -8,9 +8,13 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
+import {MainContext} from "../contexts/MainContext";
+import {StationDetail} from "../view/StationDetail";
 
 const WebBar = () => {
   const [toggleState, setToggleState] = useState(1);
+
+  const {navigator, setNavigator}  = React.useContext(MainContext)
 
   const toggleTab = (index) => {
     setToggleState(index);
@@ -27,6 +31,7 @@ const WebBar = () => {
                 <Button
                   key={page}
                   onClick={() => {
+                    setNavigator(false)
                     toggleTab(index);
                   }}
                   sx={{ my: 2, color: "white", display: "block" }}
@@ -38,11 +43,12 @@ const WebBar = () => {
           </Toolbar>
         </Container>
       </AppBar>
-      {toggleState === 0 ? (
+      {navigator? <StationDetail></StationDetail> : toggleState === 0 ? (
         <Journey />
       ) : (
         <> {toggleState === 1 ? <Station /> : <UploadDb />} </>
       )}
+      
     </>
   );
 };

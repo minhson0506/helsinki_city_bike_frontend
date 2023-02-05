@@ -21,7 +21,9 @@ function createJourney(
   id,
   departure,
   returnTime,
+  departureId,
   departureStation,
+  returnId,
   returnStation,
   distance,
   duration
@@ -30,7 +32,9 @@ function createJourney(
     id,
     departure,
     returnTime,
+    departureId,
     departureStation,
+    returnId,
     returnStation,
     distance,
     duration,
@@ -40,11 +44,30 @@ function createJourney(
 // create station data record
 function createStation(no, id, name, address, capacity) {
   return {
-      no,
+    no,
     id,
     name,
     address,
     capacity,
+  };
+}
+
+// create station detail data
+function createStationDetail(
+  name,
+  address,
+  start,
+  end,
+  distanceStart,
+  distanceEnd
+) {
+  return {
+    name,
+    address,
+    start,
+    end,
+    distanceStart,
+    distanceEnd,
   };
 }
 
@@ -108,12 +131,12 @@ const headCells = [
     {
       id: "distance",
       disablePadding: false,
-      label: "Distance",
+      label: "Distance (km)",
     },
     {
       id: "duration",
       disablePadding: false,
-      label: "Duration",
+      label: "Duration (min)",
     },
   ],
   [
@@ -141,6 +164,43 @@ const headCells = [
       id: "capacity",
       disablePadding: false,
       label: "Capacity",
+    },
+    {
+      id: "link",
+      disablePadding: false,
+      label: "Link to detail",
+    },
+  ],
+  [
+    {
+      id: "name",
+      disablePadding: false,
+      label: "Name",
+    },
+    {
+      id: "address",
+      disablePadding: false,
+      label: "Adress",
+    },
+    {
+      id: "start",
+      disablePadding: false,
+      label: "No of journeys start in",
+    },
+    {
+      id: "end",
+      disablePadding: false,
+      label: "No of journeys end in",
+    },
+    {
+      id: "distanceStart",
+      disablePadding: false,
+      label: "Average distance start in (km)",
+    },
+    {
+      id: "distanceEnd",
+      disablePadding: false,
+      label: "Average distance end in (km)",
     },
   ],
 ];
@@ -301,7 +361,7 @@ function EnhancedTableToolbar(props) {
 }
 
 EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
+  numSelected: PropTypes.number,
   selected: PropTypes.array,
   isJourney: PropTypes.bool.isRequired,
 };
@@ -309,8 +369,10 @@ EnhancedTableToolbar.propTypes = {
 export {
   createJourney,
   createStation,
+  createStationDetail,
   EnhancedTableHead,
   EnhancedTableToolbar,
   stableSort,
   getComparator,
+  headCells,
 };

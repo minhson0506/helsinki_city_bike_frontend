@@ -41,10 +41,12 @@ const Journey = () => {
               element.Return_.split("T")[0] +
                 " " +
                 element.Departure.split("T")[1].substr(0, 8),
+              element.Departure_station,
               element.Departure_station_name,
+              element.Return_station,
               element.Return_station_name,
-              element.Distance,
-              element.Duration
+              element.Distance / 1000,
+              Math.round(element.Duration / 6) / 10
             )
           );
         });
@@ -57,7 +59,7 @@ const Journey = () => {
 
   useEffect(() => {
     getJourneys();
-  });
+  }, []);
 
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("id");

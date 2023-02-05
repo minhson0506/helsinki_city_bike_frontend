@@ -34,6 +34,7 @@ const useStation = () => {
     return await doFetch(baseUrl + "station/" + id);
   };
 
+
   return { getAllStations, getStationById };
 };
 
