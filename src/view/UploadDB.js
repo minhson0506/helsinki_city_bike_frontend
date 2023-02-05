@@ -2,7 +2,7 @@ const UploadDb = () => {
   return (
     <>
       <form
-        action="http://localhost:3001/journeyFile"
+        action="http://localhost:3001/journey"
         method="post"
         enctype="multipart/form-data"
         class="light-border"
@@ -13,7 +13,7 @@ const UploadDb = () => {
         </button>
       </form>
       <form
-        action="http://localhost:3001/stationFile"
+        action="http://localhost:3001/station"
         method="post"
         enctype="multipart/form-data"
         class="light-border"

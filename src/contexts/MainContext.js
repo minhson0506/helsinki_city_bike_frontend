@@ -4,12 +4,13 @@ import PropTypes from 'prop-types';
 const MainContext = React.createContext({});
 
 const MainProvider = (props) => {
-  
+  const [loading, setLoding] = useState(false);
 
   return (
     <MainContext.Provider
       value={{
-        
+        loading, 
+        setLoding
       }}
     >
       {props.children}

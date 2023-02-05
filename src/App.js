@@ -1,10 +1,13 @@
 import "./App.css";
 import { WebBar } from "./components/WebBar";
+import { MainProvider } from "./contexts/MainContext";
 
 function App() {
   return (
     <div>
-      <WebBar></WebBar>
+      <MainProvider>
+        <WebBar></WebBar>
+      </MainProvider>
     </div>
   );
 }
