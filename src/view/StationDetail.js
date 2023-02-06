@@ -26,7 +26,6 @@ const StationDetail = () => {
   const { loading, journeyData } = useContext(MainContext);
 
   const getData = async () => {
-    // await getJourneys();
     if (id !== "" && journeyData) {
       try {
         const response = await getStationById(id);
