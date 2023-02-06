@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { MainContext } from "../contexts/MainContext";
-import { useJourney, useStation } from "../hooks/Apihooks";
-import { createJourney, createStationDetail, headCells } from "../utils/table";
+import { useStation } from "../hooks/Apihooks";
+import { createStationDetail, headCells } from "../utils/table";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -20,49 +20,13 @@ import { Icon } from "leaflet";
 const StationDetail = () => {
   const { id } = useContext(MainContext);
   const { getStationById } = useStation();
-  const { getAllJourneys } = useJourney();
 
   const [rows, setRows] = useState();
 
-  const { loading, setLoading } = useContext(MainContext);
-
-  const [journeyData, setJourneyData] = useState();
-
-  // get data of journey
-  const getJourneys = async () => {
-    try {
-      const response = await getAllJourneys();
-      if (response) {
-        let data = [];
-        response.forEach(async (element) => {
-          data.push(
-            createJourney(
-              element.Id,
-              element.Departure.split("T")[0] +
-                " " +
-                element.Departure.split("T")[1].substr(0, 8),
-              element.Return_.split("T")[0] +
-                " " +
-                element.Departure.split("T")[1].substr(0, 8),
-              element.Departure_station,
-              element.Departure_station_name,
-              element.Return_station,
-              element.Return_station_name,
-              element.Distance / 1000,
-              Math.round(element.Duration / 6) / 10
-            )
-          );
-        });
-        setJourneyData(data);
-        setLoading(!loading);
-      }
-    } catch (error) {
-      console.log("error when get all journeys", error);
-    }
-  };
+  const { loading, journeyData } = useContext(MainContext);
 
   const getData = async () => {
-    await getJourneys();
+    // await getJourneys();
     if (id !== "" && journeyData) {
       try {
         const response = await getStationById(id);

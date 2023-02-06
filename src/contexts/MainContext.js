@@ -7,6 +7,7 @@ const MainProvider = (props) => {
   const [navigator, setNavigator] = useState(false);
   const [id, setId] = useState("")
   const [loading, setLoading] = useState(false)
+  const [journeyData, setJourneyData] = useState([])
 
   return (
     <MainContext.Provider
@@ -16,7 +17,8 @@ const MainProvider = (props) => {
         id,
         setId,
         loading,
-        setLoading
+        setLoading,
+        journeyData, setJourneyData
       }}
     >
       {props.children}

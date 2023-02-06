@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
@@ -19,11 +19,12 @@ import {
   stableSort,
 } from "../utils/table";
 import { useJourney } from "../hooks/Apihooks";
+import {MainContext} from "../contexts/MainContext";
 
 const Journey = () => {
   const { getAllJourneys } = useJourney();
 
-  const [rows, setRows] = useState();
+  const {journeyData, setJourneyData} = useContext(MainContext)
 
   // get data of journey
   const getJourneys = async () => {
@@ -50,7 +51,7 @@ const Journey = () => {
             )
           );
         });
-        setRows(data);
+        setJourneyData(data);
       }
     } catch (error) {
       console.log("error when get all journeys", error);
@@ -77,7 +78,7 @@ const Journey = () => {
   // function for all click
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.id);
+      const newSelected = journeyData.map((n) => n.id);
       setSelected(newSelected);
       return;
     }
@@ -124,11 +125,11 @@ const Journey = () => {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - journeyData.length) : 0;
 
   return (
     <>
-      {rows !== undefined ? (
+      {journeyData !== undefined ? (
         <Box sx={{ width: "100%" }}>
           <Paper sx={{ width: "100%", mb: 2 }}>
             <EnhancedTableToolbar
@@ -148,11 +149,11 @@ const Journey = () => {
                   orderBy={orderBy}
                   onSelectAllClick={handleSelectAllClick}
                   onRequestSort={handleRequestSort}
-                  rowCount={rows.length}
+                  rowCount={journeyData.length}
                   isJourney={true}
                 />
                 <TableBody>
-                  {stableSort(rows, getComparator(order, orderBy))
+                  {stableSort(journeyData, getComparator(order, orderBy))
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => {
                       const isItemSelected = isSelected(row.id);
@@ -213,7 +214,7 @@ const Journey = () => {
             <TablePagination
               rowsPerPageOptions={[10, 20, 30]}
               component="div"
-              count={rows.length}
+              count={journeyData.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
